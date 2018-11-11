@@ -51,11 +51,11 @@ class InteractiveRecord
   def self.find_by(options={})
       stored_options = options
       stored_options.each do |property, value|
-      sql = "SELECT * FROM #{self.table_name} WHERE #{property} = '#{value}'"
-      DB[:conn].execute(sql)
+      @sql = "SELECT * FROM #{self.table_name} WHERE #{property} = '#{value}'"
       end
+      DB[:conn].execute(@sql)
   end
-
+  
   def col_names_for_insert
     self.class.column_names.delete_if {|col| col == "id"}.join(", ")
   end
