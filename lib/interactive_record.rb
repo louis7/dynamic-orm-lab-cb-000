@@ -8,7 +8,7 @@ class InteractiveRecord
   def self.table_name
       self.to_s.downcase.pluralize
   end
-  
+
   def table_name_for_insert
       self.class.table_name
   end
@@ -42,6 +42,18 @@ class InteractiveRecord
       DB[:conn].execute(sql)
   end
 
+  def self.find_by_name(name)
+      sql = "SELECT * FROM #{self.table_name} WHERE name = '#{name}'"
+      DB[:conn].execute(sql)
+  end
+
+
+  def self.find_by(options={})
+      options.each do |property, value|
+      sql = "SELECT * FROM #{self.table_name} WHERE #{options[property]} = '#{value}'"
+      end
+      DB[:conn].execute(sql)
+  end
   def col_names_for_insert
     self.class.column_names.delete_if {|col| col == "id"}.join(", ")
   end
